@@ -1,5 +1,5 @@
 {
-    "name": "dino/dompdf-module",
+    "name": "alexz707/dompdf-module",
     "type": "library",
     "description": "A Zend Framework 2 module for incorporating DOMPDF support.",
     "keywords": ["pdf","dompdf", "zf2"],
