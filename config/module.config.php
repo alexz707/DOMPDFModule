@@ -19,8 +19,15 @@
 
 namespace DOMPDFModule;
 
-return array(
-    'dompdf_module' => array(
+use DOMPDF;
+use DOMPDFModule\Factory\DOMPDFFactory;
+use DOMPDFModule\Factory\ViewPdfRendererFactory;
+use DOMPDFModule\Factory\ViewPdfStrategyFactory;
+use DOMPDFModule\View\Renderer\PdfRenderer;
+use DOMPDFModule\View\Strategy\PdfStrategy;
+
+return [
+    'dompdf_module'   => [
         /**
          * The location of the DOMPDF font directory
          *
@@ -48,7 +55,7 @@ return array(
          *
          * *Please note the trailing slash.*
          */
-        'font_directory' => __DIR__ . '/../../../dompdf/dompdf/lib/fonts/',
+        'font_directory'           => __DIR__ . '/../../../dompdf/dompdf/lib/fonts/',
 
         /**
          * The location of the DOMPDF font cache directory
@@ -58,7 +65,7 @@ return array(
          * It contains the .afm files, on demand parsed, converted to php syntax and cached
          * This folder can be the same as DOMPDF_FONT_DIR
          */
-        'font_cache_directory' => __DIR__ . '/../../../dompdf/dompdf/lib/fonts/',
+        'font_cache_directory'     => __DIR__ . '/../../../dompdf/dompdf/lib/fonts/',
 
         /**
          * The location of a temporary directory.
@@ -67,7 +74,7 @@ return array(
          * The temporary directory is required to download remote images and when
          * using the PFDLib back end.
          */
-        'temporary_directory' => sys_get_temp_dir(),
+        'temporary_directory'      => sys_get_temp_dir(),
 
         /**
          * ==== IMPORTANT ====
@@ -81,7 +88,7 @@ return array(
          * direct class use like:
          * $dompdf = new DOMPDF(); $dompdf->load_html($htmldata); $dompdf->render(); $pdfdata = $dompdf->output();
          */
-        'chroot' => realpath(__DIR__ . '/../../../dompdf/dompdf/'),
+        'chroot'                   => dirname(__DIR__ . '/../../../dompdf/dompdf/'),
 
         /**
          * Whether to use Unicode fonts or not.
@@ -92,12 +99,12 @@ return array(
          * When enabled, dompdf can support all Unicode glyphs.  Any glyphs used in a
          * document must be present in your fonts, however.
          */
-        'unicode_enabled' => true,
+        'unicode_enabled'          => true,
 
         /**
          * Whether to make font subsetting or not.
          */
-        'enable_fontsubsetting' => false,
+        'enable_fontsubsetting'    => false,
 
         /**
          * The PDF rendering backend to use
@@ -127,7 +134,7 @@ return array(
          * @link http://www.ros.co.nz/pdf
          * @link http://www.php.net/image
          */
-        'pdf_backend' => 'CPDF',
+        'pdf_backend'              => 'CPDF',
 
         /**
          * html target media view which should be rendered into pdf.
@@ -139,7 +146,7 @@ return array(
          * the desired content might be different (e.g. screen or projection view of html file).
          * Therefore allow specification of content here.
          */
-        'default_media_type' => 'screen',
+        'default_media_type'       => 'screen',
 
         /**
          * PDFlib license key
@@ -162,15 +169,16 @@ return array(
          *
          * @see CPDF_Adapter::PAPER_SIZES for valid sizes
          */
-        'default_paper_size' => 'letter',
+        'default_paper_size'       => 'letter',
 
         /**
          * The default font family
          *
          * Used if no suitable fonts can be found. This must exist in the font folder.
+         *
          * @var string
          */
-        'default_font' => 'serif',
+        'default_font'             => 'serif',
 
         /**
          * Image DPI setting
@@ -205,7 +213,7 @@ return array(
          *
          * @var int
          */
-        'dpi' => 96,
+        'dpi'                      => 96,
 
         /**
          * Enable inline PHP
@@ -219,7 +227,7 @@ return array(
          *
          * @var bool
          */
-        'enable_php' => false,
+        'enable_php'               => false,
 
         /**
          * Enable inline Javascript
@@ -229,7 +237,7 @@ return array(
          *
          * @var bool
          */
-        'enable_javascript' => true,
+        'enable_javascript'        => true,
 
         /**
          * Enable remote file access
@@ -248,57 +256,59 @@ return array(
          *
          * @var bool
          */
-        'enable_remote' => false,
+        'enable_remote'            => false,
 
         /**
          * The debug output log
+         *
          * @var string
          */
-        'log_output_file' => __DIR__ . '/../../data/dompdf/log',
+        'log_output_file'          => __DIR__ . '/../../data/dompdf/log',
 
         /**
          * A ratio applied to the fonts height to be more like browsers' line height
          */
-        'font_height_ratio' => 1.1,
+        'font_height_ratio'        => 1.1,
 
         /**
          * Enable CSS float
          *
          * Allows people to disabled CSS float support
+         *
          * @var bool
          */
-        'enable_css_float' => false,
+        'enable_css_float'         => false,
 
         /**
          * Use the more-than-experimental HTML5 Lib parser
          */
-        'enable_html5parser' => false,
-        'debug_png' => false,
-        'debug_keep_temp' => false,
-        'debug_css' => false,
-        'debug_layout' => false,
-        'debug_layout_links' => false,
-        'debug_layout_blocks' => false,
-        'debug_layout_inline' => false,
-        'debug_layout_padding_box' => false
-    ),
-    'view_manager' => array(
-        'strategies' => array(
-            'ViewPdfStrategy'
-        )
-    ),
-    'service_manager' => array(
-        'shared' => array(
+        'enable_html5parser'       => false,
+        'debug_png'                => false,
+        'debug_keep_temp'          => false,
+        'debug_css'                => false,
+        'debug_layout'             => false,
+        'debug_layout_links'       => false,
+        'debug_layout_blocks'      => false,
+        'debug_layout_inline'      => false,
+        'debug_layout_padding_box' => false,
+    ],
+    'view_manager'    => [
+        'strategies' => [
+            PdfStrategy::class,
+        ],
+    ],
+    'service_manager' => [
+        'shared'    => [
             /**
              * DOMPDF itself has issues rendering twice in a row so we force a
              * new instance to be created.
              */
-            'DOMPDF' => false
-        ),
-        'factories' => array(
-            'DOMPDF'          => __NAMESPACE__ . '\Service\DOMPDFFactory',
-            'ViewPdfRenderer' => __NAMESPACE__ . '\Mvc\Service\ViewPdfRendererFactory',
-            'ViewPdfStrategy' => __NAMESPACE__ . '\Mvc\Service\ViewPdfStrategyFactory',
-        )
-    ),
-);
+            DOMPDF::class => false,
+        ],
+        'factories' => [
+            DOMPDF::class      => DOMPDFFactory::class,
+            PdfRenderer::class => ViewPdfRendererFactory::class,
+            PdfStrategy::class => ViewPdfStrategyFactory::class,
+        ],
+    ],
+];

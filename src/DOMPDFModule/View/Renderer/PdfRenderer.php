@@ -19,66 +19,80 @@
 
 namespace DOMPDFModule\View\Renderer;
 
+use DOMPDF;
+use DOMPDFModule\View\Model\PdfModel;
+use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Renderer\RendererInterface as Renderer;
 use Zend\View\Resolver\ResolverInterface as Resolver;
-use DOMPDF;
 
 class PdfRenderer implements Renderer
 {
-    private $dompdf = null;
-    private $resolver = null;
-    private $htmlRenderer = null;
-    
-    public function setHtmlRenderer(Renderer $renderer)
+    /**
+     * @var DOMPDF
+     */
+    private $dompdf;
+
+    /**
+     * @var PhpRenderer
+     */
+    private $htmlRenderer;
+
+    public function setHtmlRenderer(PhpRenderer $renderer)
     {
         $this->htmlRenderer = $renderer;
+
         return $this;
     }
-    
+
     public function getHtmlRenderer()
     {
         return $this->htmlRenderer;
     }
-    
+
     public function setEngine(DOMPDF $dompdf)
     {
         $this->dompdf = $dompdf;
+
         return $this;
     }
-    
+
     public function getEngine()
     {
         return $this->dompdf;
     }
-    
+
     /**
      * Renders values as a PDF
      *
-     * @param  string|Model $name The script/resource process, or a view model
+     * @param string|PdfModel $nameOrModel
      * @param  null|array|\ArrayAccess Values to use during rendering
+     *
      * @return string The script output.
+     * @throws \Zend\View\Exception\InvalidArgumentException
+     * @throws \Zend\View\Exception\DomainException
+     * @throws \Zend\View\Exception\RuntimeException
+     * @internal param Model|string $name The script/resource process, or a view model
      */
     public function render($nameOrModel, $values = null)
     {
-        $html = $this->getHtmlRenderer()->render($nameOrModel, $values);
-        
+        $html = $this->getHtmlRenderer()->render($nameOrModel);
+
         $paperSize = $nameOrModel->getOption('paperSize');
         $paperOrientation = $nameOrModel->getOption('paperOrientation');
         $basePath = $nameOrModel->getOption('basePath');
-        
+
         $pdf = $this->getEngine();
         $pdf->set_paper($paperSize, $paperOrientation);
         $pdf->set_base_path($basePath);
-        
+
         $pdf->load_html($html);
         $pdf->render();
-        
+
         return $pdf->output();
     }
 
     public function setResolver(Resolver $resolver)
     {
-        $this->resolver = $resolver;
-        return $this;
+        //not using it anywhere
     }
 }

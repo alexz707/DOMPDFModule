@@ -17,28 +17,32 @@
  * @license	http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace DOMPDFModule\Mvc\Service;
+namespace DOMPDFModule\Factory;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use DOMPDFModule\View\Strategy\PdfStrategy;
+use DOMPDFModule\View\Renderer\PdfRenderer;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\View\Renderer\PhpRenderer;
 
-class ViewPdfStrategyFactory implements FactoryInterface
+class ViewPdfRendererFactory implements FactoryInterface
 {
     /**
-     * Create and return the PDF view strategy
+     * Create and return the PDF view renderer
      *
-     * Retrieves the ViewPdfRenderer service from the service locator, and
-     * injects it into the constructor for the PDF strategy.
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array $options
      *
-     * @param  ServiceLocatorInterface $serviceLocator
-     * @return PdfStrategy
+     * @return PdfRenderer
+     * @throws \Interop\Container\Exception\ContainerException
+     * @internal param ServiceLocatorInterface $serviceLocator
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $pdfRenderer = $serviceLocator->get('ViewPdfRenderer');
-        $pdfStrategy = new PdfStrategy($pdfRenderer);
-        
-        return $pdfStrategy;
+        $pdfRenderer = new PdfRenderer();
+        $pdfRenderer->setHtmlRenderer($container->get(PhpRenderer::class));
+        $pdfRenderer->setEngine($container->get(\DOMPDF::class));
+
+        return $pdfRenderer;
     }
 }

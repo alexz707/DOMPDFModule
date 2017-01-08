@@ -166,8 +166,6 @@ class PdfStrategyTest extends TestCase
         $this->resolver = new TemplatePathStack();
         $this->resolver->addPath(dirname(__DIR__) . '/_templates');
 
-        $this->renderer->setResolver($this->resolver);
-
         $htmlRenderer = new PhpRenderer();
         $htmlRenderer->setResolver($this->resolver);
         $this->renderer->setHtmlRenderer($htmlRenderer);

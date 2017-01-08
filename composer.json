@@ -14,10 +14,10 @@
     "require": {
         "php": ">=5.3.29",
         "zendframework/zend-loader": "^2.1.6",
-        "zendframework/zend-servicemanager": "^2.1.6",
-        "zendframework/zend-modulemanager": "^2.1.6",
-        "zendframework/zend-mvc": "^2.1.6 <2.7",
-        "zendframework/zend-view": "^2.1.6",
+        "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3",
+        "zendframework/zend-modulemanager": "^2.7.2",
+        "zendframework/zend-mvc": "^3.0.1",
+        "zendframework/zend-view": "^2.8.1",
         "zendframework/zend-serializer": "^2.1.6",
         "zendframework/zend-log": "^2.1.6",
         "zendframework/zend-i18n": "^2.1.6",
@@ -34,12 +34,12 @@
     },
     "autoload": {
         "psr-0": {
-            "DOMPDFModule": "src/"
+            "DOMPDFModule\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-0": {
-            "DOMPDFModuleTest": "tests/"
+            "DOMPDFModuleTest\\": "tests/"
         }
     }
 }
