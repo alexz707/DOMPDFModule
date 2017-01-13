@@ -76,8 +76,8 @@ class DOMPDFFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        defined('DOMPDF_DIR') || define('DOMPDF_DIR', __DIR__ . '/../../../../../dompdf/dompdf');
-        defined('DOMPDF_INC_DIR') || define('DOMPDF_INC_DIR', DOMPDF_DIR . '/include');
+        defined('DOMPDF_DIR') || define('DOMPDF_DIR', __DIR__ . '/../../../../../dompdf/dompdf/');
+        defined('DOMPDF_INC_DIR') || define('DOMPDF_INC_DIR', DOMPDF_DIR . '/src');
         defined('DOMPDF_LIB_DIR') || define('DOMPDF_LIB_DIR', DOMPDF_DIR . '/lib');
         defined('DOMPDF_AUTOLOAD_PREPEND') || define('DOMPDF_AUTOLOAD_PREPEND', false);
         defined('DOMPDF_ADMIN_USERNAME') || define('DOMPDF_ADMIN_USERNAME', false);
