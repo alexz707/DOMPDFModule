@@ -89,7 +89,7 @@ class DOMPDFFactory implements FactoryInterface
         $this->applyCompatGlobals($config['dompdf_module']);
 
         require_once DOMPDF_LIB_DIR . '/html5lib/Parser.php';
-        require_once DOMPDF_INC_DIR . '/functions.inc.php';
+        //require_once DOMPDF_INC_DIR . '/functions.inc.php';
         require_once __DIR__ . '/../../../config/module.compat.php';
 
         return new Dompdf();
