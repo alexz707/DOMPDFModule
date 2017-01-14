@@ -19,7 +19,7 @@
 
 namespace DOMPDFModule\Factory;
 
-use DOMPDF;
+use Dompdf\Dompdf;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
@@ -92,7 +92,7 @@ class DOMPDFFactory implements FactoryInterface
         require_once DOMPDF_INC_DIR . '/functions.inc.php';
         require_once __DIR__ . '/../../../config/module.compat.php';
 
-        return new DOMPDF();
+        return new Dompdf();
     }
 
     /**
